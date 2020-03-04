@@ -2,5 +2,11 @@
   "name": "netree",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "typescript": "^3.8.3"
+  },
+  "devDependencies": {
+    "jest": "^25.1.0"
+  }
 }
