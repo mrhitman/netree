@@ -4086,10 +4086,10 @@ ts-node@^8.6.2:
     source-map-support "^0.5.6"
     yn "3.1.1"
 
-ts-protoc-gen@^0.12.0:
-  version "0.12.0"
-  resolved "https://registry.yarnpkg.com/ts-protoc-gen/-/ts-protoc-gen-0.12.0.tgz#932e5738f14b67e7202825b06f8c548cb7d8ef34"
-  integrity sha512-V7jnICJxKqalBrnJSMTW5tB9sGi48gOC325bfcM7TDNUItVOlaMM//rQmuo49ybipk/SyJTnWXgtJnhHCevNJw==
+ts-protoc-gen@^0.12.1-pre.a78a914:
+  version "0.12.1-pre.a78a914"
+  resolved "https://registry.yarnpkg.com/ts-protoc-gen/-/ts-protoc-gen-0.12.1-pre.a78a914.tgz#ab118ae7dda3f94d8f93259f340ed74fb7d3b1e4"
+  integrity sha512-0xS+OskEgHGrluq4fGryXmqOFtrPJ53bO+0BG3RsfYw+tTxwSQnKfOkFQJwPWXoC3pOcZqv7aQyGa8c3gMjUeQ==
   dependencies:
     google-protobuf "^3.6.1"
 
