@@ -3,6 +3,7 @@ import * as uuid from "uuid";
 import { DataProvider } from "../components/data-provider";
 import * as graph_pb from "../generated/graph_pb";
 import * as graph from "../generated/graph_pb.js";
+import * as grpc from "grpc";
 
 interface Request<T> {
   request: T;
@@ -11,15 +12,30 @@ interface Request<T> {
 export class NodeDefinition {
   constructor(protected readonly provider: DataProvider) {}
 
-  public getNode(
+  protected deserializeNode(item: string) {
+    return graph.Node.deserializeBinary(Buffer.from(item, "base64"));
+  }
+
+  public async getNode(
     call: Request<graph_pb.GetNodeRequest>,
     callback: requestCallback<graph_pb.GetNodeResponse>
   ) {
     const response = new graph.GetNodeResponse();
-    const node = new graph.Node();
-    node.setId("Test id");
-    node.setName("Test name");
-    response.setNode(node);
+    const data = await this.provider.read();
+    const node = data.find((item: string) => {
+      const node = this.deserializeNode(item);
+      return node.getId() === call.request.getId();
+    });
+
+    if (!node) {
+      return callback({
+        code: grpc.status.NOT_FOUND,
+        name: "NOT_FOUND",
+        message: "No such node"
+      });
+    }
+
+    response.setNode(this.deserializeNode(node));
     callback(null, response);
   }
 
@@ -29,9 +45,7 @@ export class NodeDefinition {
   ) {
     const response = new graph.GetNodesResponse();
     const data = await this.provider.read();
-    const nodes = data.map((item: string) =>
-      graph.Node.deserializeBinary(new Buffer(item, "base64"))
-    );
+    const nodes = data.map(this.deserializeNode);
     response.setNodeList(nodes);
     callback(null, response);
   }
