@@ -12,7 +12,9 @@ if (!module.parent) {
   config();
   const server = createServer();
   const port = process.env.PORT || 3000;
-  //   server.addService(hello_proto.Greeter.service, {sayHello: sayHello});
+  server.addService({ api: Node }, () => {
+    console.log("HERE");
+  });
   server.bind(`0.0.0.0:${port}`, ServerCredentials.createInsecure());
   global.console.log(`Server binded to 0.0.0.0:${port}`);
   server.start();
