@@ -111,6 +111,9 @@ export class NodeDefinition {
       });
     }
 
+    this.nodes = this.nodes.filter(
+      node => node.getId() !== call.request.getId()
+    );
     const response = new graph.DeleteNodeResponse();
     response.setDeleted(true);
     callback(null, response);
