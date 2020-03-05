@@ -2,12 +2,16 @@ import { config } from "dotenv";
 import { Server, ServerCredentials } from "grpc";
 import * as services from "./generated/graph_grpc_pb.js";
 import NodeDefinition from "./implementations/node-service";
+import { GraphFileDataProvider } from "./components/graph-data-provider";
 
 config();
 
 function createServer() {
   const server = new Server();
-  server.addService(services.GraphService, new NodeDefinition({}));
+  server.addService(
+    services.GraphService,
+    new NodeDefinition(new GraphFileDataProvider("data.txt"))
+  );
   return server;
 }
 

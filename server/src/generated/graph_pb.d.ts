@@ -116,10 +116,11 @@ export namespace GetNodesResponse {
 }
 
 export class AddNodeRequest extends jspb.Message {
-  hasNode(): boolean;
-  clearNode(): void;
-  getNode(): Node | undefined;
-  setNode(value?: Node): void;
+  getName(): string;
+  setName(value: string): void;
+
+  getParentId(): string;
+  setParentId(value: string): void;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): AddNodeRequest.AsObject;
@@ -133,7 +134,8 @@ export class AddNodeRequest extends jspb.Message {
 
 export namespace AddNodeRequest {
   export type AsObject = {
-    node?: Node.AsObject,
+    name: string,
+    parentId: string,
   }
 }
 

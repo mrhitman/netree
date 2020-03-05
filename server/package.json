@@ -17,12 +17,19 @@
     "google-protobuf": "^3.11.4",
     "grpc": "^1.24.2",
     "grpc-tools": "^1.8.1",
+    "highland": "^2.13.5",
+    "lodash": "^4.17.15",
     "protoc-gen-ts": "^0.0.5",
     "ts-protoc-gen": "^0.12.1-pre.a78a914",
-    "typescript": "^3.8.3"
+    "typescript": "^3.8.3",
+    "uuid": "^7.0.2"
   },
   "devDependencies": {
     "@types/google-protobuf": "^3.7.2",
+    "@types/highland": "^2.12.9",
+    "@types/lodash": "^4.14.149",
+    "@types/node": "^13.7.7",
+    "@types/uuid": "^7.0.0",
     "@typescript-eslint/eslint-plugin": "^2.22.0",
     "@typescript-eslint/parser": "^2.22.0",
     "eslint": "^6.8.0",

@@ -33,7 +33,8 @@ message GetNodesResponse {
 }
 
 message AddNodeRequest {
-  Node node = 1;
+  string name = 1;
+  string parent_id = 2;
 }
 
 message UpdateNodeRequest {

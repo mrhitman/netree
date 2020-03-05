@@ -1003,7 +1003,8 @@ proto.api.AddNodeRequest.prototype.toObject = function(opt_includeInstance) {
  */
 proto.api.AddNodeRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    node: (f = msg.getNode()) && proto.api.Node.toObject(includeInstance, f)
+    name: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    parentId: jspb.Message.getFieldWithDefault(msg, 2, "")
   };
 
   if (includeInstance) {
@@ -1041,9 +1042,12 @@ proto.api.AddNodeRequest.deserializeBinaryFromReader = function(msg, reader) {
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = new proto.api.Node;
-      reader.readMessage(value,proto.api.Node.deserializeBinaryFromReader);
-      msg.setNode(value);
+      var value = /** @type {string} */ (reader.readString());
+      msg.setName(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setParentId(value);
       break;
     default:
       reader.skipField();
@@ -1074,51 +1078,56 @@ proto.api.AddNodeRequest.prototype.serializeBinary = function() {
  */
 proto.api.AddNodeRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getNode();
-  if (f != null) {
-    writer.writeMessage(
+  f = message.getName();
+  if (f.length > 0) {
+    writer.writeString(
       1,
-      f,
-      proto.api.Node.serializeBinaryToWriter
+      f
+    );
+  }
+  f = message.getParentId();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
     );
   }
 };
 
 
 /**
- * optional Node node = 1;
- * @return {?proto.api.Node}
+ * optional string name = 1;
+ * @return {string}
  */
-proto.api.AddNodeRequest.prototype.getNode = function() {
-  return /** @type{?proto.api.Node} */ (
-    jspb.Message.getWrapperField(this, proto.api.Node, 1));
+proto.api.AddNodeRequest.prototype.getName = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
 /**
- * @param {?proto.api.Node|undefined} value
- * @return {!proto.api.AddNodeRequest} returns this
-*/
-proto.api.AddNodeRequest.prototype.setNode = function(value) {
-  return jspb.Message.setWrapperField(this, 1, value);
-};
-
-
-/**
- * Clears the message field making it undefined.
+ * @param {string} value
  * @return {!proto.api.AddNodeRequest} returns this
  */
-proto.api.AddNodeRequest.prototype.clearNode = function() {
-  return this.setNode(undefined);
+proto.api.AddNodeRequest.prototype.setName = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
 };
 
 
 /**
- * Returns whether this field is set.
- * @return {boolean}
+ * optional string parent_id = 2;
+ * @return {string}
  */
-proto.api.AddNodeRequest.prototype.hasNode = function() {
-  return jspb.Message.getField(this, 1) != null;
+proto.api.AddNodeRequest.prototype.getParentId = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.api.AddNodeRequest} returns this
+ */
+proto.api.AddNodeRequest.prototype.setParentId = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
 };
 
 
