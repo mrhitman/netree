@@ -6,7 +6,7 @@ import { GraphFileDataProvider } from "./components/graph-data-provider";
 
 config();
 
-function createServer() {
+export function createServer() {
   const server = new Server();
   server.addService(
     services.GraphService,

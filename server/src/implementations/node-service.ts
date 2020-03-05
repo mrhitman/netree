@@ -23,17 +23,15 @@ export class NodeDefinition {
     return graph.Node.deserializeBinary(Buffer.from(item, "base64"));
   }
 
-  protected getNodeItem(id: string) {
-    return this.nodes.find(node => {
-      return node.getId() === id;
-    });
+  protected findNode(id: string) {
+    return this.nodes.find(node => node.getId() === id);
   }
 
   public async getNode(
     call: Request<graph_pb.GetNodeRequest>,
     callback: requestCallback<graph_pb.GetNodeResponse>
   ) {
-    const node = this.getNodeItem(call.request.getId());
+    const node = this.findNode(call.request.getId());
 
     if (!node) {
       return callback({
@@ -79,7 +77,7 @@ export class NodeDefinition {
     call: Request<graph_pb.UpdateNodeRequest>,
     callback: requestCallback<graph_pb.GetNodeResponse>
   ) {
-    const node = this.getNodeItem(call.request.getId());
+    const node = this.findNode(call.request.getId());
     const sendedNode = call.request.getNode();
 
     if (!node || !sendedNode) {
@@ -101,7 +99,7 @@ export class NodeDefinition {
     call: Request<graph_pb.DeleteNodeRequest>,
     callback: requestCallback<graph_pb.DeleteNodeResponse>
   ) {
-    const node = this.getNodeItem(call.request.getId());
+    const node = this.findNode(call.request.getId());
 
     if (!node) {
       return callback({
