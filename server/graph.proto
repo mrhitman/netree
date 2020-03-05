@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package api;
+
+service Graph {
+  rpc GetNode (GetNodeRequest) returns (GetNodeResponse) {}
+  rpc GetNodes (GetNodesRequest) returns (GetNodesResponse) {}
+  rpc AddNode (AddNodeRequest) returns (GetNodeResponse) {}
+  rpc UpdateNode (UpdateNodeRequest) returns (GetNodeResponse) {}
+  rpc DeleteNode (GetNodeRequest) returns (DeleteNodeResponse) {}
+}
+
+message Node {
+  string id = 1;
+  string name = 2;
+  string parent_id = 3;
+}
+
+message GetNodeRequest {
+  string id = 1;
+}
+
+message GetNodeResponse {
+  Node node = 1;
+}
+
+message GetNodesRequest {
+  string parent_id = 1;
+}
+
+message GetNodesResponse {
+  repeated Node node = 1;
+}
+
+message AddNodeRequest {
+  Node node = 1;
+}
+
+message UpdateNodeRequest {
+  string id = 1;
+  Node node = 2;
+}
+
+message DeleteNodeResponse {
+  bool deleted = 1;
+}
