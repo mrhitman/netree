@@ -1,0 +1,7 @@
+version: 3
+services:
+  server:
+    image: node:alpine
+
+  client:
+    image: nginx:alpine
