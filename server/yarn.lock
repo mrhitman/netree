@@ -4220,6 +4220,11 @@ protobufjs@^6.8.6:
     "@types/node" "^10.1.0"
     long "^4.0.0"
 
+protoc-gen-ts@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/protoc-gen-ts/-/protoc-gen-ts-0.0.5.tgz#cce18162940b5972e51463587893524fe0ad2abe"
+  integrity sha512-7JdFixRg591TX/aVtmbqjCTZMswLAHs0gUphUmSgoDrPTewf5R5Pn/hGrV2b+GslKXfK+kfZJmu0Y885Ciwnpg==
+
 pseudomap@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/pseudomap/-/pseudomap-1.0.2.tgz#f052a28da70e618917ef0a8ac34c1ae5a68286b3"

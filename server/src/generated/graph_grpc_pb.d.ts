@@ -11,7 +11,7 @@ interface IGraphService extends grpc.ServiceDefinition<grpc.UntypedServiceImplem
   getNodes: grpc.MethodDefinition<graph_pb.GetNodesRequest, graph_pb.GetNodesResponse>;
   addNode: grpc.MethodDefinition<graph_pb.AddNodeRequest, graph_pb.GetNodeResponse>;
   updateNode: grpc.MethodDefinition<graph_pb.UpdateNodeRequest, graph_pb.GetNodeResponse>;
-  deleteNode: grpc.MethodDefinition<graph_pb.GetNodeRequest, graph_pb.DeleteNodeResponse>;
+  deleteNode: grpc.MethodDefinition<graph_pb.DeleteNodeRequest, graph_pb.DeleteNodeResponse>;
 }
 
 export const GraphService: IGraphService;
@@ -30,7 +30,7 @@ export class GraphClient extends grpc.Client {
   updateNode(argument: graph_pb.UpdateNodeRequest, callback: grpc.requestCallback<graph_pb.GetNodeResponse>): grpc.ClientUnaryCall;
   updateNode(argument: graph_pb.UpdateNodeRequest, metadataOrOptions: grpc.Metadata | grpc.CallOptions | null, callback: grpc.requestCallback<graph_pb.GetNodeResponse>): grpc.ClientUnaryCall;
   updateNode(argument: graph_pb.UpdateNodeRequest, metadata: grpc.Metadata | null, options: grpc.CallOptions | null, callback: grpc.requestCallback<graph_pb.GetNodeResponse>): grpc.ClientUnaryCall;
-  deleteNode(argument: graph_pb.GetNodeRequest, callback: grpc.requestCallback<graph_pb.DeleteNodeResponse>): grpc.ClientUnaryCall;
-  deleteNode(argument: graph_pb.GetNodeRequest, metadataOrOptions: grpc.Metadata | grpc.CallOptions | null, callback: grpc.requestCallback<graph_pb.DeleteNodeResponse>): grpc.ClientUnaryCall;
-  deleteNode(argument: graph_pb.GetNodeRequest, metadata: grpc.Metadata | null, options: grpc.CallOptions | null, callback: grpc.requestCallback<graph_pb.DeleteNodeResponse>): grpc.ClientUnaryCall;
+  deleteNode(argument: graph_pb.DeleteNodeRequest, callback: grpc.requestCallback<graph_pb.DeleteNodeResponse>): grpc.ClientUnaryCall;
+  deleteNode(argument: graph_pb.DeleteNodeRequest, metadataOrOptions: grpc.Metadata | grpc.CallOptions | null, callback: grpc.requestCallback<graph_pb.DeleteNodeResponse>): grpc.ClientUnaryCall;
+  deleteNode(argument: graph_pb.DeleteNodeRequest, metadata: grpc.Metadata | null, options: grpc.CallOptions | null, callback: grpc.requestCallback<graph_pb.DeleteNodeResponse>): grpc.ClientUnaryCall;
 }

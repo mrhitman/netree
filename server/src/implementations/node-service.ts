@@ -1,16 +1,13 @@
-import { requestCallback, Server, ServerCredentials } from "grpc";
-import {
-  GetNodeRequest,
-  GetNodeResponse,
-  GetNodesRequest,
-  GetNodesResponse
-} from "../generated/graph_pb";
+import { requestCallback } from "grpc";
+import * as graph_pb from "../generated/graph_pb";
 import * as graph from "../generated/graph_pb.js";
 
 export class NodeDefinition {
+  constructor(protected readonly dataSource: any) {}
+
   public getNode(
-    req: GetNodeRequest,
-    callback: requestCallback<GetNodeResponse>
+    req: graph_pb.GetNodeRequest,
+    callback: requestCallback<graph_pb.GetNodeResponse>
   ) {
     const response = new graph.GetNodeResponse();
     const node = new graph.Node();
@@ -22,8 +19,8 @@ export class NodeDefinition {
   }
 
   public getNodes(
-    req: GetNodesRequest,
-    callback: requestCallback<GetNodesResponse>
+    req: graph_pb.GetNodesRequest,
+    callback: requestCallback<graph_pb.GetNodesResponse>
   ): void {
     const response = new graph.GetNodesResponse();
     const node = new graph.Node();
@@ -33,13 +30,23 @@ export class NodeDefinition {
     callback(null, response);
   }
 
-  public addNode() {
+  public addNode(
+    req: graph_pb.AddNodeRequest,
+    callback: requestCallback<graph_pb.GetNodeResponse>
+  ) {
     console.log("add node");
   }
-  public updateNode() {
+  public updateNode(
+    req: graph_pb.UpdateNodeRequest,
+    callback: requestCallback<graph_pb.GetNodeResponse>
+  ) {
     console.log("update node");
   }
-  public deleteNode() {
+
+  public deleteNode(
+    req: graph_pb.DeleteNodeRequest,
+    callback: requestCallback<graph_pb.DeleteNodeResponse>
+  ) {
     console.log("delete node");
   }
 }

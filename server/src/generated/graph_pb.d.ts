@@ -163,6 +163,26 @@ export namespace UpdateNodeRequest {
   }
 }
 
+export class DeleteNodeRequest extends jspb.Message {
+  getId(): string;
+  setId(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): DeleteNodeRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: DeleteNodeRequest): DeleteNodeRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: DeleteNodeRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): DeleteNodeRequest;
+  static deserializeBinaryFromReader(message: DeleteNodeRequest, reader: jspb.BinaryReader): DeleteNodeRequest;
+}
+
+export namespace DeleteNodeRequest {
+  export type AsObject = {
+    id: string,
+  }
+}
+
 export class DeleteNodeResponse extends jspb.Message {
   getDeleted(): boolean;
   setDeleted(value: boolean): void;

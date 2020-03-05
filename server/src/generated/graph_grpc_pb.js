@@ -15,6 +15,17 @@ function deserialize_api_AddNodeRequest(buffer_arg) {
   return graph_pb.AddNodeRequest.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
+function serialize_api_DeleteNodeRequest(arg) {
+  if (!(arg instanceof graph_pb.DeleteNodeRequest)) {
+    throw new Error('Expected argument of type api.DeleteNodeRequest');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_api_DeleteNodeRequest(buffer_arg) {
+  return graph_pb.DeleteNodeRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 function serialize_api_DeleteNodeResponse(arg) {
   if (!(arg instanceof graph_pb.DeleteNodeResponse)) {
     throw new Error('Expected argument of type api.DeleteNodeResponse');
@@ -131,10 +142,10 @@ var GraphService = exports.GraphService = {
     path: '/api.Graph/DeleteNode',
     requestStream: false,
     responseStream: false,
-    requestType: graph_pb.GetNodeRequest,
+    requestType: graph_pb.DeleteNodeRequest,
     responseType: graph_pb.DeleteNodeResponse,
-    requestSerialize: serialize_api_GetNodeRequest,
-    requestDeserialize: deserialize_api_GetNodeRequest,
+    requestSerialize: serialize_api_DeleteNodeRequest,
+    requestDeserialize: deserialize_api_DeleteNodeRequest,
     responseSerialize: serialize_api_DeleteNodeResponse,
     responseDeserialize: deserialize_api_DeleteNodeResponse,
   },

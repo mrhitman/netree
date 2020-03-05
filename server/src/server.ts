@@ -7,7 +7,7 @@ config();
 
 function createServer() {
   const server = new Server();
-  server.addService(services.GraphService, new NodeDefinition());
+  server.addService(services.GraphService, new NodeDefinition({}));
   return server;
 }
 

@@ -7,7 +7,7 @@ service Graph {
   rpc GetNodes (GetNodesRequest) returns (GetNodesResponse) {}
   rpc AddNode (AddNodeRequest) returns (GetNodeResponse) {}
   rpc UpdateNode (UpdateNodeRequest) returns (GetNodeResponse) {}
-  rpc DeleteNode (GetNodeRequest) returns (DeleteNodeResponse) {}
+  rpc DeleteNode (DeleteNodeRequest) returns (DeleteNodeResponse) {}
 }
 
 message Node {
@@ -39,6 +39,10 @@ message AddNodeRequest {
 message UpdateNodeRequest {
   string id = 1;
   Node node = 2;
+}
+
+message DeleteNodeRequest {
+  string id = 1;
 }
 
 message DeleteNodeResponse {
