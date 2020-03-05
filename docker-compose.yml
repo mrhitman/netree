@@ -3,5 +3,7 @@ services:
   server:
     image: node:alpine
 
+  proxy:
+    image: envoy
   client:
     image: nginx:alpine
