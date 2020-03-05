@@ -1,31 +1,39 @@
+import * as grpc from "grpc";
 import { requestCallback } from "grpc";
 import * as uuid from "uuid";
 import { DataProvider } from "../components/data-provider";
 import * as graph_pb from "../generated/graph_pb";
+import { Node } from "../generated/graph_pb";
 import * as graph from "../generated/graph_pb.js";
-import * as grpc from "grpc";
 
 interface Request<T> {
   request: T;
 }
 
 export class NodeDefinition {
-  constructor(protected readonly provider: DataProvider) {}
+  protected nodes: Node[] = [];
+
+  constructor(protected readonly provider: DataProvider) {
+    provider.read().then((data: any[]) => {
+      this.nodes = data.map(this.deserializeNode);
+    });
+  }
 
   protected deserializeNode(item: string) {
     return graph.Node.deserializeBinary(Buffer.from(item, "base64"));
+  }
+
+  protected getNodeItem(id: string) {
+    return this.nodes.find(node => {
+      return node.getId() === id;
+    });
   }
 
   public async getNode(
     call: Request<graph_pb.GetNodeRequest>,
     callback: requestCallback<graph_pb.GetNodeResponse>
   ) {
-    const response = new graph.GetNodeResponse();
-    const data = await this.provider.read();
-    const node = data.find((item: string) => {
-      const node = this.deserializeNode(item);
-      return node.getId() === call.request.getId();
-    });
+    const node = this.getNodeItem(call.request.getId());
 
     if (!node) {
       return callback({
@@ -35,7 +43,8 @@ export class NodeDefinition {
       });
     }
 
-    response.setNode(this.deserializeNode(node));
+    const response = new graph.GetNodeResponse();
+    response.setNode(node);
     callback(null, response);
   }
 
@@ -44,9 +53,7 @@ export class NodeDefinition {
     callback: requestCallback<graph_pb.GetNodesResponse>
   ) {
     const response = new graph.GetNodesResponse();
-    const data = await this.provider.read();
-    const nodes = data.map(this.deserializeNode);
-    response.setNodeList(nodes);
+    response.setNodeList(this.nodes);
     callback(null, response);
   }
 
@@ -68,21 +75,45 @@ export class NodeDefinition {
     callback(null, response);
   }
 
-  public updateNode(
+  public async updateNode(
     call: Request<graph_pb.UpdateNodeRequest>,
     callback: requestCallback<graph_pb.GetNodeResponse>
   ) {
+    const node = this.getNodeItem(call.request.getId());
+    const sendedNode = call.request.getNode();
+
+    if (!node || !sendedNode) {
+      return callback({
+        code: grpc.status.INVALID_ARGUMENT,
+        name: "INVALID_ARGUMENT",
+        message: "Invalid node"
+      });
+    }
+    node.setName(sendedNode.getName());
+    node.setParentId(sendedNode.getParentId());
+
     const response = new graph.GetNodeResponse();
-    const node = new graph.Node();
     response.setNode(node);
     callback(null, response);
   }
 
-  public deleteNode(
-    req: graph_pb.DeleteNodeRequest,
+  public async deleteNode(
+    call: Request<graph_pb.DeleteNodeRequest>,
     callback: requestCallback<graph_pb.DeleteNodeResponse>
   ) {
-    console.log("delete node");
+    const node = this.getNodeItem(call.request.getId());
+
+    if (!node) {
+      return callback({
+        code: grpc.status.INVALID_ARGUMENT,
+        name: "INVALID_ARGUMENT",
+        message: "Invalid node"
+      });
+    }
+
+    const response = new graph.DeleteNodeResponse();
+    response.setDeleted(true);
+    callback(null, response);
   }
 }
 
