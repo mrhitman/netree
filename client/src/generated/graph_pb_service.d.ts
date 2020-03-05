@@ -45,7 +45,7 @@ type GraphDeleteNode = {
   readonly service: typeof Graph;
   readonly requestStream: false;
   readonly responseStream: false;
-  readonly requestType: typeof graph_pb.GetNodeRequest;
+  readonly requestType: typeof graph_pb.DeleteNodeRequest;
   readonly responseType: typeof graph_pb.DeleteNodeResponse;
 };
 
@@ -127,12 +127,12 @@ export class GraphClient {
     callback: (error: ServiceError|null, responseMessage: graph_pb.GetNodeResponse|null) => void
   ): UnaryResponse;
   deleteNode(
-    requestMessage: graph_pb.GetNodeRequest,
+    requestMessage: graph_pb.DeleteNodeRequest,
     metadata: grpc.Metadata,
     callback: (error: ServiceError|null, responseMessage: graph_pb.DeleteNodeResponse|null) => void
   ): UnaryResponse;
   deleteNode(
-    requestMessage: graph_pb.GetNodeRequest,
+    requestMessage: graph_pb.DeleteNodeRequest,
     callback: (error: ServiceError|null, responseMessage: graph_pb.DeleteNodeResponse|null) => void
   ): UnaryResponse;
 }

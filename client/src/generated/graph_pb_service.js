@@ -51,7 +51,7 @@ Graph.DeleteNode = {
   service: Graph,
   requestStream: false,
   responseStream: false,
-  requestType: graph_pb.GetNodeRequest,
+  requestType: graph_pb.DeleteNodeRequest,
   responseType: graph_pb.DeleteNodeResponse
 };
 
