@@ -1,9 +1,13 @@
-version: 3
+version: "3"
 services:
   server:
     image: node:alpine
 
   proxy:
-    image: envoy
+    image: "envoyproxy/envoy-dev:f9391065e3e091cea0bd25115b1767a00192dbdd"
+    network_mode: host
+    volumes:
+      - ./envoy.yml:/etc/envoy/envoy.yaml
+
   client:
     image: nginx:alpine

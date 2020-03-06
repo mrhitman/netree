@@ -3,7 +3,7 @@ import { grpc } from "@improbable-eng/grpc-web";
 import { Graph } from "./generated/graph_pb_service.js";
 import { GetNodesRequest } from "./generated/graph_pb";
 
-const host = "http://127.0.0.1:3001";
+const host = "http://127.0.0.1:8080";
 
 const request = new GetNodesRequest();
 grpc.unary(Graph.GetNodes, {
