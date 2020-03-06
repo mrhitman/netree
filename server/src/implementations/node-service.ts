@@ -9,14 +9,8 @@ import * as graph from "../../../generated/graph_pb.js";
 import { DataProvider } from "../components/data-provider";
 
 export class NodeDefinition extends EventEmitter {
-  protected nodes: graph_pb.Node[] = [];
-
   constructor(protected readonly provider: DataProvider) {
     super();
-
-    provider.read().then((data: any[]) => {
-      this.nodes = data.map(this.deserializeNode);
-    });
   }
 
   protected deserializeNode(item: string) {
@@ -24,29 +18,34 @@ export class NodeDefinition extends EventEmitter {
   }
 
   protected findNode(id: string) {
-    return this.nodes.find(node => node.getId() === id);
+    return this.provider
+      .readStream<string>()
+      .split()
+      .filter(Boolean)
+      .map(this.deserializeNode)
+      .find(node => node.getId() === id);
   }
 
   public async getNode(
     call: grpc.ServerUnaryCall<graph_pb.GetNodeRequest>,
     callback: grpc.sendUnaryData<graph_pb.GetNodeResponse>
   ) {
-    const node = this.findNode(call.request.getId());
+    this.findNode(call.request.getId()).toCallback((err, node) => {
+      if (err || !node) {
+        return callback(
+          {
+            code: grpc.status.NOT_FOUND,
+            name: "NOT_FOUND",
+            message: "No such node"
+          },
+          null
+        );
+      }
 
-    if (!node) {
-      return callback(
-        {
-          code: grpc.status.NOT_FOUND,
-          name: "NOT_FOUND",
-          message: "No such node"
-        },
-        null
-      );
-    }
-
-    const response = new graph.GetNodeResponse();
-    response.setNode(node);
-    callback(null, response);
+      const response = new graph.GetNodeResponse();
+      response.setNode(node);
+      callback(null, response);
+    });
   }
 
   public async getNodes(
@@ -55,7 +54,7 @@ export class NodeDefinition extends EventEmitter {
     this.provider
       .readStream<string>()
       .split()
-      .filter(data => !!data)
+      .filter(Boolean)
       .map(this.deserializeNode)
       .each(node => {
         const response = new graph.GetNodesResponse();
@@ -81,7 +80,6 @@ export class NodeDefinition extends EventEmitter {
     await this.provider.save(
       Buffer.from(node.serializeBinary()).toString("base64")
     );
-    this.nodes.push(node);
     this.emit("add", node);
     callback(null, response);
   }
@@ -90,54 +88,53 @@ export class NodeDefinition extends EventEmitter {
     call: grpc.ServerUnaryCall<graph_pb.UpdateNodeRequest>,
     callback: grpc.sendUnaryData<graph_pb.GetNodeResponse>
   ) {
-    const node = this.findNode(call.request.getId());
-    const sendedNode = call.request.getNode();
+    this.findNode(call.request.getId()).toCallback((err, node) => {
+      const sendedNode = call.request.getNode();
 
-    if (!node || !sendedNode) {
-      return callback(
-        {
-          code: grpc.status.INVALID_ARGUMENT,
-          name: "INVALID_ARGUMENT",
-          message: "Invalid node"
-        },
-        null
-      );
-    }
-    node.setName(sendedNode.getName());
-    node.setParentId(sendedNode.getParentId());
+      if (!node || !sendedNode) {
+        return callback(
+          {
+            code: grpc.status.INVALID_ARGUMENT,
+            name: "INVALID_ARGUMENT",
+            message: "Invalid node"
+          },
+          null
+        );
+      }
+      node.setName(sendedNode.getName());
+      node.setParentId(sendedNode.getParentId());
 
-    const response = new graph.GetNodeResponse();
-    this.emit("update", node);
-    response.setNode(node);
-    callback(null, response);
+      const response = new graph.GetNodeResponse();
+      this.emit("update", node);
+      response.setNode(node);
+      callback(null, response);
+    });
   }
 
   public async deleteNode(
     call: grpc.ServerUnaryCall<graph_pb.DeleteNodeRequest>,
     callback: grpc.sendUnaryData<graph_pb.DeleteNodeResponse>
   ) {
-    const node = this.findNode(call.request.getId());
+    this.findNode(call.request.getId()).toCallback((err, node) => {
+      if (!node) {
+        callback(
+          {
+            code: grpc.status.INVALID_ARGUMENT,
+            name: "INVALID_ARGUMENT",
+            message: "Invalid node"
+          },
+          null
+        );
 
-    if (!node) {
-      callback(
-        {
-          code: grpc.status.INVALID_ARGUMENT,
-          name: "INVALID_ARGUMENT",
-          message: "Invalid node"
-        },
-        null
-      );
+        return;
+      }
 
-      return;
-    }
-
-    this.nodes = this.nodes.filter(
-      node => node.getId() !== call.request.getId()
-    );
-    const response = new graph.DeleteNodeResponse();
-    response.setDeleted(true);
-    this.emit("delete", node);
-    callback(null, response);
+      const response = new graph.DeleteNodeResponse();
+      // @TODO delete from file
+      response.setDeleted(true);
+      this.emit("delete", node);
+      callback(null, response);
+    });
   }
 
   public async subscribe(
