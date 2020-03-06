@@ -9,6 +9,8 @@ const readFile = promisify(fs.readFile);
 export class GraphFileDataProvider extends DataProvider {
   constructor(protected readonly fileName: string) {
     super();
+
+    fs.closeSync(fs.openSync(fileName, "w"));
   }
 
   public async save(data: any) {
