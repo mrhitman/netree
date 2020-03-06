@@ -38,24 +38,16 @@ export class TxtDataProvider extends DataProvider {
   public async update(oldLine: string, newLine: string) {
     const lines = await this.read();
 
-    return Promise.all(
-      lines.map((line, i) => {
-        const l = line === oldLine ? newLine : line;
-        return i === 0 ? writeFile(this.fileName, l + "\n") : this.save(l);
-      })
+    return writeFile(
+      this.fileName,
+      lines.map((line, i) => (line === oldLine ? newLine : line)).join("\n")
     );
   }
 
   public async delete(line: string) {
     const lines = await this.read();
 
-    return Promise.all(
-      lines
-        .filter(l => l !== line)
-        .map((l, i) =>
-          i === 0 ? writeFile(this.fileName, l + "\n") : this.save(l)
-        )
-    );
+    return writeFile(this.fileName, lines.filter(l => l !== line).join("\n"));
   }
 }
 
