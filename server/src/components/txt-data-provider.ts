@@ -6,6 +6,7 @@ import _ from "highland";
 
 const appendFile = promisify(fs.appendFile);
 const readFile = promisify(fs.readFile);
+const truncate = promisify(fs.truncate);
 
 export class TxtDataProvider extends DataProvider {
   constructor(protected readonly fileName: string) {
@@ -28,6 +29,10 @@ export class TxtDataProvider extends DataProvider {
 
   public readStream<T>(): Highland.Stream<T> {
     return _<T>(fs.createReadStream(this.fileName, "utf8"));
+  }
+
+  public async truncate() {
+    return truncate(this.fileName, 0);
   }
 
   public async search(f: (line: string) => boolean) {
