@@ -1,6 +1,9 @@
 import * as protoLoader from "@grpc/proto-loader";
 import { credentials, loadPackageDefinition } from "grpc";
+import * as minimist from "minimist";
 import { GetNodesRequest } from "./generated/graph_pb";
+
+const argv = minimist(process.argv.slice(2));
 
 const packageDefinition = protoLoader.loadSync("../graph.proto", {
   keepCase: true,
@@ -12,15 +15,25 @@ const packageDefinition = protoLoader.loadSync("../graph.proto", {
 
 const graphProto = loadPackageDefinition(packageDefinition).api as any;
 
-function main() {
-  const client = new graphProto.Graph(
-    "localhost:9090",
-    credentials.createInsecure()
-  );
+function createClient() {
+  return new graphProto.Graph("localhost:9090", credentials.createInsecure());
+}
+
+async function getNodes() {
+  const client = createClient();
   const request = new GetNodesRequest();
   client.getNodes(request, function(err: any, response: any) {
-    console.log("Greeting:", response);
+    console.log("GET NODES:", response);
   });
 }
 
-main();
+async function subscribe() {
+  const client = createClient();
+  const channel = client.Subscribe();
+
+  channel.on("data", (data: any) => {
+    global.console.log(data);
+  });
+}
+
+console.log(process.argv);

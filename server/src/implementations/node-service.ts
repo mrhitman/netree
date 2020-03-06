@@ -1,19 +1,22 @@
+import { EventEmitter } from "events";
 import * as grpc from "grpc";
 import { requestCallback } from "grpc";
+import { curry } from "lodash";
 import * as uuid from "uuid";
 import { DataProvider } from "../components/data-provider";
 import * as graph_pb from "../generated/graph_pb";
-import { Node } from "../generated/graph_pb";
+import { Commands, Node } from "../generated/graph_pb";
 import * as graph from "../generated/graph_pb.js";
 
 interface Request<T> {
   request: T;
 }
-
-export class NodeDefinition {
+export class NodeDefinition extends EventEmitter {
   protected nodes: Node[] = [];
 
   constructor(protected readonly provider: DataProvider) {
+    super();
+
     provider.read().then((data: any[]) => {
       this.nodes = data.map(this.deserializeNode);
     });
@@ -70,6 +73,7 @@ export class NodeDefinition {
     await this.provider.save(
       Buffer.from(node.serializeBinary()).toString("base64")
     );
+    this.emit("add", node);
     callback(null, response);
   }
 
@@ -91,6 +95,7 @@ export class NodeDefinition {
     node.setParentId(sendedNode.getParentId());
 
     const response = new graph.GetNodeResponse();
+    this.emit("update", node);
     response.setNode(node);
     callback(null, response);
   }
@@ -114,18 +119,24 @@ export class NodeDefinition {
     );
     const response = new graph.DeleteNodeResponse();
     response.setDeleted(true);
+    this.emit("delete", node);
     callback(null, response);
   }
 
   public async subscribe(
-    call: grpc.ServerWritableStream<graph_pb.GetNodeResponse>
+    call: grpc.ServerWritableStream<graph_pb.SubsribeResponse>
   ) {
-    setInterval(() => {
-      const node = this.nodes[0];
-      const response = new graph.GetNodeResponse();
+    function stream(command: 0 | 1 | 2, node: Node) {
+      global.console.log({ command, node });
+      const response = new graph.SubsribeResponse();
+      response.setCommand(command);
       response.setNode(node);
       call.write(response);
-    }, 2000);
+    }
+
+    this.on("add", curry(stream)(Commands.ADD));
+    this.on("update", curry(stream)(Commands.UPDATE));
+    this.on("delete", curry(stream)(Commands.DELETE));
   }
 }
 

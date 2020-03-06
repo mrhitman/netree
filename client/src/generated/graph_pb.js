@@ -12,6 +12,7 @@ var goog = jspb;
 var global = Function('return this')();
 
 goog.exportSymbol('proto.api.AddNodeRequest', null, global);
+goog.exportSymbol('proto.api.Commands', null, global);
 goog.exportSymbol('proto.api.DeleteNodeRequest', null, global);
 goog.exportSymbol('proto.api.DeleteNodeResponse', null, global);
 goog.exportSymbol('proto.api.GetNodeRequest', null, global);
@@ -185,7 +186,8 @@ proto.api.SubsribeResponse.prototype.toObject = function(opt_includeInstance) {
  */
 proto.api.SubsribeResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-
+    command: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    node: (f = msg.getNode()) && proto.api.Node.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -222,6 +224,15 @@ proto.api.SubsribeResponse.deserializeBinaryFromReader = function(msg, reader) {
     }
     var field = reader.getFieldNumber();
     switch (field) {
+    case 1:
+      var value = /** @type {!proto.api.Commands} */ (reader.readEnum());
+      msg.setCommand(value);
+      break;
+    case 2:
+      var value = new proto.api.Node;
+      reader.readMessage(value,proto.api.Node.deserializeBinaryFromReader);
+      msg.setNode(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -251,6 +262,66 @@ proto.api.SubsribeResponse.prototype.serializeBinary = function() {
  */
 proto.api.SubsribeResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
+  f = message.getCommand();
+  if (f !== 0.0) {
+    writer.writeEnum(
+      1,
+      f
+    );
+  }
+  f = message.getNode();
+  if (f != null) {
+    writer.writeMessage(
+      2,
+      f,
+      proto.api.Node.serializeBinaryToWriter
+    );
+  }
+};
+
+
+/**
+ * optional Commands command = 1;
+ * @return {!proto.api.Commands}
+ */
+proto.api.SubsribeResponse.prototype.getCommand = function() {
+  return /** @type {!proto.api.Commands} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/** @param {!proto.api.Commands} value */
+proto.api.SubsribeResponse.prototype.setCommand = function(value) {
+  jspb.Message.setProto3EnumField(this, 1, value);
+};
+
+
+/**
+ * optional Node node = 2;
+ * @return {?proto.api.Node}
+ */
+proto.api.SubsribeResponse.prototype.getNode = function() {
+  return /** @type{?proto.api.Node} */ (
+    jspb.Message.getWrapperField(this, proto.api.Node, 2));
+};
+
+
+/** @param {?proto.api.Node|undefined} value */
+proto.api.SubsribeResponse.prototype.setNode = function(value) {
+  jspb.Message.setWrapperField(this, 2, value);
+};
+
+
+proto.api.SubsribeResponse.prototype.clearNode = function() {
+  this.setNode(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.api.SubsribeResponse.prototype.hasNode = function() {
+  return jspb.Message.getField(this, 2) != null;
 };
 
 
@@ -1701,5 +1772,14 @@ proto.api.DeleteNodeResponse.prototype.setDeleted = function(value) {
   jspb.Message.setProto3BooleanField(this, 1, value);
 };
 
+
+/**
+ * @enum {number}
+ */
+proto.api.Commands = {
+  ADD: 0,
+  UPDATE: 1,
+  DELETE: 2
+};
 
 goog.object.extend(exports, proto.api);

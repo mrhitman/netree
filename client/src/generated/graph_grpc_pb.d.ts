@@ -12,7 +12,7 @@ interface IGraphService extends grpc.ServiceDefinition<grpc.UntypedServiceImplem
   addNode: grpc.MethodDefinition<graph_pb.AddNodeRequest, graph_pb.GetNodeResponse>;
   updateNode: grpc.MethodDefinition<graph_pb.UpdateNodeRequest, graph_pb.GetNodeResponse>;
   deleteNode: grpc.MethodDefinition<graph_pb.DeleteNodeRequest, graph_pb.DeleteNodeResponse>;
-  subscribe: grpc.MethodDefinition<graph_pb.SubsribeRequest, graph_pb.GetNodeResponse>;
+  subscribe: grpc.MethodDefinition<graph_pb.SubsribeRequest, graph_pb.SubsribeResponse>;
 }
 
 export const GraphService: IGraphService;
@@ -34,6 +34,6 @@ export class GraphClient extends grpc.Client {
   deleteNode(argument: graph_pb.DeleteNodeRequest, callback: grpc.requestCallback<graph_pb.DeleteNodeResponse>): grpc.ClientUnaryCall;
   deleteNode(argument: graph_pb.DeleteNodeRequest, metadataOrOptions: grpc.Metadata | grpc.CallOptions | null, callback: grpc.requestCallback<graph_pb.DeleteNodeResponse>): grpc.ClientUnaryCall;
   deleteNode(argument: graph_pb.DeleteNodeRequest, metadata: grpc.Metadata | null, options: grpc.CallOptions | null, callback: grpc.requestCallback<graph_pb.DeleteNodeResponse>): grpc.ClientUnaryCall;
-  subscribe(argument: graph_pb.SubsribeRequest, metadataOrOptions?: grpc.Metadata | grpc.CallOptions | null): grpc.ClientReadableStream<graph_pb.GetNodeResponse>;
-  subscribe(argument: graph_pb.SubsribeRequest, metadata?: grpc.Metadata | null, options?: grpc.CallOptions | null): grpc.ClientReadableStream<graph_pb.GetNodeResponse>;
+  subscribe(argument: graph_pb.SubsribeRequest, metadataOrOptions?: grpc.Metadata | grpc.CallOptions | null): grpc.ClientReadableStream<graph_pb.SubsribeResponse>;
+  subscribe(argument: graph_pb.SubsribeRequest, metadata?: grpc.Metadata | null, options?: grpc.CallOptions | null): grpc.ClientReadableStream<graph_pb.SubsribeResponse>;
 }

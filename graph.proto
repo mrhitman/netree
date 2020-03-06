@@ -8,10 +8,22 @@ service Graph {
   rpc AddNode (AddNodeRequest) returns (GetNodeResponse) {}
   rpc UpdateNode (UpdateNodeRequest) returns (GetNodeResponse) {}
   rpc DeleteNode (DeleteNodeRequest) returns (DeleteNodeResponse) {}
-  rpc Subscribe (SubsribeRequest) returns (stream GetNodeResponse) {}
+  rpc Subscribe (SubsribeRequest) returns (stream SubsribeResponse) {}
 }
 
 message SubsribeRequest {}
+
+
+enum Commands {
+  add=0;
+  update=1;
+  delete=2;
+}
+
+message SubsribeResponse {
+  Commands command = 1;
+  Node node = 2;
+}
 
 message Node {
   string id = 1;

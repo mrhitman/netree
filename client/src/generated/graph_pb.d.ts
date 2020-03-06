@@ -20,6 +20,14 @@ export namespace SubsribeRequest {
 }
 
 export class SubsribeResponse extends jspb.Message {
+  getCommand(): CommandsMap[keyof CommandsMap];
+  setCommand(value: CommandsMap[keyof CommandsMap]): void;
+
+  hasNode(): boolean;
+  clearNode(): void;
+  getNode(): Node | undefined;
+  setNode(value?: Node): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): SubsribeResponse.AsObject;
   static toObject(includeInstance: boolean, msg: SubsribeResponse): SubsribeResponse.AsObject;
@@ -32,6 +40,8 @@ export class SubsribeResponse extends jspb.Message {
 
 export namespace SubsribeResponse {
   export type AsObject = {
+    command: CommandsMap[keyof CommandsMap],
+    node?: Node.AsObject,
   }
 }
 
@@ -236,4 +246,12 @@ export namespace DeleteNodeResponse {
     deleted: boolean,
   }
 }
+
+export interface CommandsMap {
+  ADD: 0;
+  UPDATE: 1;
+  DELETE: 2;
+}
+
+export const Commands: CommandsMap;
 

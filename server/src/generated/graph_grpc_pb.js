@@ -91,6 +91,17 @@ function deserialize_api_SubsribeRequest(buffer_arg) {
   return graph_pb.SubsribeRequest.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
+function serialize_api_SubsribeResponse(arg) {
+  if (!(arg instanceof graph_pb.SubsribeResponse)) {
+    throw new Error('Expected argument of type api.SubsribeResponse');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_api_SubsribeResponse(buffer_arg) {
+  return graph_pb.SubsribeResponse.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 function serialize_api_UpdateNodeRequest(arg) {
   if (!(arg instanceof graph_pb.UpdateNodeRequest)) {
     throw new Error('Expected argument of type api.UpdateNodeRequest');
@@ -164,11 +175,11 @@ var GraphService = exports['api.Graph'] = {
     requestStream: false,
     responseStream: true,
     requestType: graph_pb.SubsribeRequest,
-    responseType: graph_pb.GetNodeResponse,
+    responseType: graph_pb.SubsribeResponse,
     requestSerialize: serialize_api_SubsribeRequest,
     requestDeserialize: deserialize_api_SubsribeRequest,
-    responseSerialize: serialize_api_GetNodeResponse,
-    responseDeserialize: deserialize_api_GetNodeResponse,
+    responseSerialize: serialize_api_SubsribeResponse,
+    responseDeserialize: deserialize_api_SubsribeResponse,
   },
 };
 
