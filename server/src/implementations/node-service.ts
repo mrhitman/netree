@@ -106,6 +106,7 @@ export class NodeDefinition extends EventEmitter {
 
       const response = new graph.GetNodeResponse();
       this.emit("update", node);
+      // @TODO edit file
       response.setNode(node);
       callback(null, response);
     });

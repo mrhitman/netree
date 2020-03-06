@@ -7,7 +7,7 @@ import _ from "highland";
 const appendFile = promisify(fs.appendFile);
 const readFile = promisify(fs.readFile);
 
-export class GraphFileDataProvider extends DataProvider {
+export class TxtDataProvider extends DataProvider {
   constructor(protected readonly fileName: string) {
     super();
 
@@ -35,4 +35,4 @@ export class GraphFileDataProvider extends DataProvider {
   }
 }
 
-export default GraphFileDataProvider;
+export default TxtDataProvider;
