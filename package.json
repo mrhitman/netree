@@ -1,28 +1,25 @@
 {
-  "name": "netree",
-  "version": "1.0.0",
-  "main": "index.js",
-  "repository": "git@github.com:mrhitman/netree.git",
-  "author": "hitman <kabalx47@gmail.com>",
-  "license": "MIT",
-  "private": true,
-  "scripts": {
-    "build": "sh protogen.sh"
-  },
-  "engines": {
-    "node": "12"
-  },
-  "dependencies": {
-    "@grpc/grpc-js": "^0.7.0",
-    "google-protobuf": "^3.11.4",
-    "grpc": "^1.24.2",
-    "grpc-tools": "^1.8.1",
-    "grpc_tools_node_protoc_ts": "^2.5.10",
-    "protoc-gen-ts": "^0.0.5",
-    "ts-protoc-gen": "^0.12.1-pre.a78a914"
-  },
-  "workspaces": [
-    "client",
-    "server"
-  ]
+    "name": "netree",
+    "version": "1.0.0",
+    "main": "index.js",
+    "repository": "git@github.com:mrhitman/netree.git",
+    "author": "hitman <kabalx47@gmail.com>",
+    "license": "MIT",
+    "private": true,
+    "scripts": {
+        "build": "sh protogen.sh"
+    },
+    "engines": {
+        "node": "12"
+    },
+    "dependencies": {
+        "@grpc/grpc-js": "^0.7.0",
+        "google-protobuf": "^3.11.4",
+        "grpc": "^1.24.2",
+        "grpc-tools": "^1.8.1",
+        "grpc_tools_node_protoc_ts": "^2.5.10",
+        "protoc-gen-ts": "^0.0.5",
+        "ts-protoc-gen": "^0.12.1-pre.a78a914"
+    },
+    "workspaces": [ "client", "server" ]
 }
