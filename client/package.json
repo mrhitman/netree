@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node dist/client.js",
+    "cli": "ts-node src/client.ts",
     "dev": "nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.test.ts' --exec 'ts-node' src/client.ts",
     "test": "jest",
     "build": "tsc"
@@ -18,7 +19,6 @@
     "grpc-tools": "^1.8.1",
     "highland": "^2.13.5",
     "lodash": "^4.17.15",
-    "minimalist": "^1.0.0",
     "typescript": "^3.8.3",
     "uuid": "^7.0.2"
   },

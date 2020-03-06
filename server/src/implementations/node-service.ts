@@ -11,6 +11,7 @@ import * as graph from "../generated/graph_pb.js";
 interface Request<T> {
   request: T;
 }
+
 export class NodeDefinition extends EventEmitter {
   protected nodes: Node[] = [];
 
@@ -34,6 +35,7 @@ export class NodeDefinition extends EventEmitter {
     call: Request<graph_pb.GetNodeRequest>,
     callback: requestCallback<graph_pb.GetNodeResponse>
   ) {
+    console.log(call.request);
     const node = this.findNode(call.request.getId());
 
     if (!node) {
