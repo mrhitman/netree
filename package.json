@@ -5,6 +5,7 @@
   "repository": "git@github.com:mrhitman/netree.git",
   "author": "hitman <kabalx47@gmail.com>",
   "license": "MIT",
+  "private": true,
   "scripts": {
     "build": "sh protogen.sh"
   },
@@ -15,5 +16,6 @@
     "protoc-gen-ts": "^0.0.5",
     "ts-protoc-gen": "^0.12.1-pre.a78a914",
     "grpc_tools_node_protoc_ts": "^2.5.10"
-  }
+  },
+  "workspaces": ["client", "server"]
 }

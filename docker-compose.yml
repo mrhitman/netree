@@ -1,13 +1,12 @@
-version: "3"
+version: "3.1"
 services:
   server:
-    image: node:alpine
-
-  proxy:
-    image: "envoyproxy/envoy-dev:f9391065e3e091cea0bd25115b1767a00192dbdd"
-    network_mode: host
-    volumes:
-      - ./envoy.yml:/etc/envoy/envoy.yaml
-
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    env_file: ./server/.env
   client:
-    image: nginx:alpine
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    env_file: ./server/.env
