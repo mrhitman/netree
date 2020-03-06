@@ -1,6 +1,7 @@
 // GENERATED CODE -- DO NOT EDIT!
 
 'use strict';
+var grpc = require('grpc');
 var graph_pb = require('./graph_pb.js');
 
 function serialize_api_AddNodeRequest(arg) {
@@ -114,7 +115,7 @@ function deserialize_api_UpdateNodeRequest(buffer_arg) {
 }
 
 
-var GraphService = exports['api.Graph'] = {
+var GraphService = exports.GraphService = {
   getNode: {
     path: '/api.Graph/GetNode',
     requestStream: false,
@@ -129,7 +130,7 @@ var GraphService = exports['api.Graph'] = {
   getNodes: {
     path: '/api.Graph/GetNodes',
     requestStream: false,
-    responseStream: false,
+    responseStream: true,
     requestType: graph_pb.GetNodesRequest,
     responseType: graph_pb.GetNodesResponse,
     requestSerialize: serialize_api_GetNodesRequest,
@@ -183,3 +184,4 @@ var GraphService = exports['api.Graph'] = {
   },
 };
 
+exports.GraphClient = grpc.makeGenericClientConstructor(GraphService);

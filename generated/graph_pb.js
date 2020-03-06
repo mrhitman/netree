@@ -869,7 +869,7 @@ proto.api.GetNodesRequest.prototype.toObject = function(opt_includeInstance) {
  */
 proto.api.GetNodesRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    parentId: jspb.Message.getFieldWithDefault(msg, 1, "")
+
   };
 
   if (includeInstance) {
@@ -906,10 +906,6 @@ proto.api.GetNodesRequest.deserializeBinaryFromReader = function(msg, reader) {
     }
     var field = reader.getFieldNumber();
     switch (field) {
-    case 1:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setParentId(value);
-      break;
     default:
       reader.skipField();
       break;
@@ -939,28 +935,6 @@ proto.api.GetNodesRequest.prototype.serializeBinary = function() {
  */
 proto.api.GetNodesRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getParentId();
-  if (f.length > 0) {
-    writer.writeString(
-      1,
-      f
-    );
-  }
-};
-
-
-/**
- * optional string parent_id = 1;
- * @return {string}
- */
-proto.api.GetNodesRequest.prototype.getParentId = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
-};
-
-
-/** @param {string} value */
-proto.api.GetNodesRequest.prototype.setParentId = function(value) {
-  jspb.Message.setProto3StringField(this, 1, value);
 };
 
 

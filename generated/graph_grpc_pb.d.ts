@@ -22,9 +22,8 @@ export class GraphClient extends grpc.Client {
   getNode(argument: graph_pb.GetNodeRequest, callback: grpc.requestCallback<graph_pb.GetNodeResponse>): grpc.ClientUnaryCall;
   getNode(argument: graph_pb.GetNodeRequest, metadataOrOptions: grpc.Metadata | grpc.CallOptions | null, callback: grpc.requestCallback<graph_pb.GetNodeResponse>): grpc.ClientUnaryCall;
   getNode(argument: graph_pb.GetNodeRequest, metadata: grpc.Metadata | null, options: grpc.CallOptions | null, callback: grpc.requestCallback<graph_pb.GetNodeResponse>): grpc.ClientUnaryCall;
-  getNodes(argument: graph_pb.GetNodesRequest, callback: grpc.requestCallback<graph_pb.GetNodesResponse>): grpc.ClientUnaryCall;
-  getNodes(argument: graph_pb.GetNodesRequest, metadataOrOptions: grpc.Metadata | grpc.CallOptions | null, callback: grpc.requestCallback<graph_pb.GetNodesResponse>): grpc.ClientUnaryCall;
-  getNodes(argument: graph_pb.GetNodesRequest, metadata: grpc.Metadata | null, options: grpc.CallOptions | null, callback: grpc.requestCallback<graph_pb.GetNodesResponse>): grpc.ClientUnaryCall;
+  getNodes(argument: graph_pb.GetNodesRequest, metadataOrOptions?: grpc.Metadata | grpc.CallOptions | null): grpc.ClientReadableStream<graph_pb.GetNodesResponse>;
+  getNodes(argument: graph_pb.GetNodesRequest, metadata?: grpc.Metadata | null, options?: grpc.CallOptions | null): grpc.ClientReadableStream<graph_pb.GetNodesResponse>;
   addNode(argument: graph_pb.AddNodeRequest, callback: grpc.requestCallback<graph_pb.GetNodeResponse>): grpc.ClientUnaryCall;
   addNode(argument: graph_pb.AddNodeRequest, metadataOrOptions: grpc.Metadata | grpc.CallOptions | null, callback: grpc.requestCallback<graph_pb.GetNodeResponse>): grpc.ClientUnaryCall;
   addNode(argument: graph_pb.AddNodeRequest, metadata: grpc.Metadata | null, options: grpc.CallOptions | null, callback: grpc.requestCallback<graph_pb.GetNodeResponse>): grpc.ClientUnaryCall;

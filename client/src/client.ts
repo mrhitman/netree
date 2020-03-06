@@ -6,8 +6,6 @@ import {
   DeleteNodeResponse,
   GetNodeRequest,
   GetNodeResponse,
-  GetNodesRequest,
-  GetNodesResponse,
   Node,
   UpdateNodeRequest
 } from "../../generated/graph_pb";
@@ -34,10 +32,12 @@ function createClient() {
 
 async function getNodes() {
   const client = createClient();
-  const request = new GetNodesRequest();
-  client.getNodes(request, function(err: Error, response: GetNodesResponse) {
-    global.console.log("GET NODES:", response);
+  const channel = client.GetNodes();
+
+  channel.on("data", (data: any) => {
+    global.console.log(data);
   });
+  channel.on("end", () => process.exit(0));
 }
 
 async function getNode(id: string) {

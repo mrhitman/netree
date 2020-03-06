@@ -4,7 +4,7 @@ package api;
 
 service Graph {
   rpc GetNode (GetNodeRequest) returns (GetNodeResponse) {}
-  rpc GetNodes (GetNodesRequest) returns (GetNodesResponse) {}
+  rpc GetNodes (GetNodesRequest) returns (stream GetNodesResponse) {}
   rpc AddNode (AddNodeRequest) returns (GetNodeResponse) {}
   rpc UpdateNode (UpdateNodeRequest) returns (GetNodeResponse) {}
   rpc DeleteNode (DeleteNodeRequest) returns (DeleteNodeResponse) {}
@@ -40,7 +40,6 @@ message GetNodeResponse {
 }
 
 message GetNodesRequest {
-  string parent_id = 1;
 }
 
 message GetNodesResponse {

@@ -4,13 +4,11 @@ import { requestCallback } from "grpc";
 import { curry } from "lodash";
 import * as uuid from "uuid";
 import * as graph_pb from "../../../generated/graph_pb";
-import * as graph_grpc_pb from "../../../generated/graph_grpc_pb";
 import { Commands } from "../../../generated/graph_pb";
 import * as graph from "../../../generated/graph_pb.js";
 import { DataProvider } from "../components/data-provider";
 
-export class NodeDefinition extends EventEmitter
-  implements graph_grpc_pb.IGraphService {
+export class NodeDefinition extends EventEmitter {
   protected nodes: graph_pb.Node[] = [];
 
   constructor(protected readonly provider: DataProvider) {
@@ -52,12 +50,19 @@ export class NodeDefinition extends EventEmitter
   }
 
   public async getNodes(
-    call: grpc.ServerUnaryCall<graph_pb.GetNodesRequest>,
-    callback: grpc.sendUnaryData<graph_pb.GetNodesResponse>
+    call: grpc.ServerWritableStream<graph_pb.GetNodesRequest>
   ) {
-    const response = new graph.GetNodesResponse();
-    response.setNodeList(this.nodes);
-    callback(null, response);
+    this.provider
+      .readStream<string>()
+      .split()
+      .filter(data => !!data)
+      .map(this.deserializeNode)
+      .each(node => {
+        const response = new graph.GetNodesResponse();
+        response.setNodeList([node]);
+        call.write(response);
+      })
+      .done(() => call.end());
   }
 
   public async addNode(
@@ -139,7 +144,6 @@ export class NodeDefinition extends EventEmitter
     call: grpc.ServerWritableStream<graph_pb.SubsribeResponse>
   ) {
     function stream(command: 0 | 1 | 2, node: graph_pb.Node) {
-      global.console.log({ command, node });
       const response = new graph.SubsribeResponse();
       response.setCommand(command);
       response.setNode(node);
