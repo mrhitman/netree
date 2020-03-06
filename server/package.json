@@ -1,7 +1,7 @@
 {
-  "name": "netree",
+  "name": "server",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/server.ts",
   "license": "MIT",
   "scripts": {
     "start": "node dist/server.js",
@@ -26,9 +26,6 @@
     "@types/lodash": "^4.14.149",
     "@types/node": "^13.7.7",
     "@types/uuid": "^7.0.0",
-    "@typescript-eslint/eslint-plugin": "^2.22.0",
-    "@typescript-eslint/parser": "^2.22.0",
-    "eslint": "^6.8.0",
     "jest": "^25.1.0",
     "nodemon": "^2.0.2",
     "ts-node": "^8.6.2"

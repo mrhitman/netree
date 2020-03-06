@@ -116,6 +116,17 @@ export class NodeDefinition {
     response.setDeleted(true);
     callback(null, response);
   }
+
+  public async subscribe(
+    call: grpc.ServerWritableStream<graph_pb.GetNodeResponse>
+  ) {
+    setInterval(() => {
+      const node = this.nodes[0];
+      const response = new graph.GetNodeResponse();
+      response.setNode(node);
+      call.write(response);
+    }, 2000);
+  }
 }
 
 export default NodeDefinition;

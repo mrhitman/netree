@@ -1,30 +1,38 @@
 {
   "name": "client",
-  "version": "0.1.0",
-  "private": true,
+  "version": "1.0.0",
+  "main": "src/client.ts",
+  "license": "MIT",
+  "scripts": {
+    "start": "node dist/client.js",
+    "dev": "nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.test.ts' --exec 'ts-node' src/client.ts",
+    "test": "jest",
+    "build": "tsc"
+  },
   "dependencies": {
-    "ts-loader": "^6.0.1",
-    "ts-protoc-gen": "0.10.0",
+    "@grpc/proto-loader": "^0.5.3",
+    "@improbable-eng/grpc-web": "^0.12.0",
+    "dotenv": "^8.2.0",
     "google-protobuf": "^3.11.4",
     "grpc": "^1.24.2",
     "grpc-tools": "^1.8.1",
-    "typescript": "~3.7.2",
-    "@grpc/proto-loader": "^0.5.3",
-    "dotenv": "^8.2.0",
-    "lodash": "^4.17.15"
+    "highland": "^2.13.5",
+    "lodash": "^4.17.15",
+    "typescript": "^3.8.3",
+    "uuid": "^7.0.2"
   },
   "devDependencies": {
     "@types/google-protobuf": "^3.7.2",
+    "@types/highland": "^2.12.9",
+    "@types/lodash": "^4.14.149",
     "@types/node": "^13.7.7",
-    "@typescript-eslint/eslint-plugin": "^2.22.0",
-    "@typescript-eslint/parser": "^2.22.0",
-    "eslint": "^6.8.0",
+    "@types/uuid": "^7.0.0",
+    "jest": "^25.1.0",
     "nodemon": "^2.0.2",
     "ts-node": "^8.6.2"
   },
-  "scripts": {
-    "build": "tsc",
-    "start": "node dist/client.js",
-    "dev": "nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.test.ts' --exec 'ts-node' src/client.ts"
+  "jest": {
+    "verbose": true,
+    "rootDir": "src"
   }
 }

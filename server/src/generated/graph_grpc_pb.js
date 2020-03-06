@@ -1,7 +1,6 @@
 // GENERATED CODE -- DO NOT EDIT!
 
 'use strict';
-var grpc = require('grpc');
 var graph_pb = require('./graph_pb.js');
 
 function serialize_api_AddNodeRequest(arg) {
@@ -81,6 +80,17 @@ function deserialize_api_GetNodesResponse(buffer_arg) {
   return graph_pb.GetNodesResponse.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
+function serialize_api_SubsribeRequest(arg) {
+  if (!(arg instanceof graph_pb.SubsribeRequest)) {
+    throw new Error('Expected argument of type api.SubsribeRequest');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_api_SubsribeRequest(buffer_arg) {
+  return graph_pb.SubsribeRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 function serialize_api_UpdateNodeRequest(arg) {
   if (!(arg instanceof graph_pb.UpdateNodeRequest)) {
     throw new Error('Expected argument of type api.UpdateNodeRequest');
@@ -93,7 +103,7 @@ function deserialize_api_UpdateNodeRequest(buffer_arg) {
 }
 
 
-var GraphService = exports.GraphService = {
+var GraphService = exports['api.Graph'] = {
   getNode: {
     path: '/api.Graph/GetNode',
     requestStream: false,
@@ -149,6 +159,16 @@ var GraphService = exports.GraphService = {
     responseSerialize: serialize_api_DeleteNodeResponse,
     responseDeserialize: deserialize_api_DeleteNodeResponse,
   },
+  subscribe: {
+    path: '/api.Graph/Subscribe',
+    requestStream: false,
+    responseStream: true,
+    requestType: graph_pb.SubsribeRequest,
+    responseType: graph_pb.GetNodeResponse,
+    requestSerialize: serialize_api_SubsribeRequest,
+    requestDeserialize: deserialize_api_SubsribeRequest,
+    responseSerialize: serialize_api_GetNodeResponse,
+    responseDeserialize: deserialize_api_GetNodeResponse,
+  },
 };
 
-exports.GraphClient = grpc.makeGenericClientConstructor(GraphService);
