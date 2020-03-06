@@ -1,6 +1,6 @@
 import { config } from "dotenv";
 import { Server, ServerCredentials } from "grpc";
-import * as graph_grpc_pb from "../../generated/graph_grpc_pb";
+import graph_grpc_pb from "../../generated/graph_grpc_pb";
 import { TxtDataProvider } from "./components/txt-data-provider";
 import NodeService from "./implementations/node-service";
 

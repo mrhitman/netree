@@ -1,30 +1,26 @@
-import { credentials, loadPackageDefinition } from "grpc";
+import { credentials } from "grpc";
+import services from "../../generated/graph_grpc_pb";
 import {
   AddNodeRequest,
   DeleteNodeRequest,
-  DeleteNodeResponse,
   GetNodeRequest,
-  GetNodeResponse,
-  Node,
-  UpdateNodeRequest
-} from "../../generated/graph_pb";
-import services from "../../generated/graph_grpc_pb";
-import { SubsribeRequest } from "../../generated/graph_pb";
-import {
   GetNodesRequest,
+  GetNodesResponse,
+  Node,
+  SubsribeRequest,
   SubsribeResponse,
-  GetNodesResponse
+  UpdateNodeRequest
 } from "../../generated/graph_pb";
 
 const argv = process.argv.slice(2);
 
 function help() {
-  global.console.log(` -all                  # Get All Graph Nodes`);
+  global.console.log(` -l, -all, -list       # Get All Graph Nodes`);
   global.console.log(` -add <name> <parent>  # To Add Graph Node`);
   global.console.log(` -view <id>            # To Add Graph Node`);
-  global.console.log(` -delete <id>          # To Delete Graph Node`);
-  global.console.log(` -subscribe            # To subscribe`);
-  global.console.log(` -help                 # This info`);
+  global.console.log(` -d, -delete <id>      # To Delete Graph Node`);
+  global.console.log(` -subscribe, -s        # To subscribe`);
+  global.console.log(` -h, -help             # This info`);
   process.exit(0);
 }
 
@@ -124,10 +120,12 @@ async function subscribe() {
 
 function main() {
   switch (argv[0]) {
+    case "-h":
     case "-help":
       help();
       break;
     case "-subscribe":
+    case "-s":
       subscribe();
       break;
     case "-add":
@@ -151,6 +149,7 @@ function main() {
       }
       updateNode(argv[1], argv[2], argv[3]);
       break;
+    case "-d":
     case "-delete":
       if (!argv[1]) {
         global.console.log("No node id");
@@ -159,6 +158,8 @@ function main() {
       deleteNode(argv[1]);
       break;
     case "-all":
+    case "-list":
+    case "-l":
       getNodes();
       break;
     default:
