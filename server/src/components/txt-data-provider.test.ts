@@ -56,5 +56,35 @@ describe("TxtFile", () => {
       content = readContent(name);
       expect(content).toHaveLength(0);
     });
+
+    test("Simple read", async () => {
+      for (let i = 0; i < 10; i++) {
+        await provider.save(chance().word());
+      }
+      const content = await readContent(name);
+      expect(content).toHaveLength(10);
+    });
+
+    test("Read stream", async () => {
+      const init: string[] = [];
+      for (let i = 0; i < 10; i++) {
+        const data = chance().word();
+        init.push(data);
+        await provider.save(data);
+      }
+
+      let count = 0;
+      provider
+        .readStream<string>()
+        .split()
+        .filter(Boolean)
+        .each(line => {
+          expect(init.includes(line)).toBeTruthy;
+          count++;
+        })
+        .done(() => {
+          expect(count).toBe(10);
+        });
+    });
   });
 });
