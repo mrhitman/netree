@@ -1,9 +1,16 @@
 import * as protoLoader from "@grpc/proto-loader";
 import { credentials, loadPackageDefinition } from "grpc";
+import { DeleteNodeResponse } from "./generated/graph_pb";
 import {
-  GetNodesRequest,
+  UpdateNodeRequest,
+  Node,
+  DeleteNodeRequest
+} from "./generated/graph_pb";
+import {
+  AddNodeRequest,
   GetNodeRequest,
   GetNodeResponse,
+  GetNodesRequest,
   GetNodesResponse
 } from "./generated/graph_pb";
 
@@ -51,6 +58,45 @@ async function getNode(id: string) {
   });
 }
 
+async function deleteNode(id: string) {
+  const client = createClient();
+  const request = new DeleteNodeRequest();
+
+  request.setId(id);
+  client.deleteNode(request, function(
+    err: Error,
+    response: DeleteNodeResponse
+  ) {
+    global.console.log("DELETE NODE:", response, err);
+  });
+}
+
+async function addNode(name: string, parent: string) {
+  const client = createClient();
+  const request = new AddNodeRequest();
+
+  request.setName(name);
+  request.setParentId(parent);
+  client.addNode(request, function(err: Error, response: GetNodeResponse) {
+    global.console.log("ADD NODE:", response, err);
+  });
+}
+
+async function updateNode(id: string, name: string, parent: string) {
+  const client = createClient();
+  const request = new UpdateNodeRequest();
+
+  const node = new Node();
+  node.setId(id);
+  node.setName(name);
+  node.setParentId(parent);
+  request.setId(id);
+  request.setNode(node);
+  client.addNode(request, function(err: Error, response: GetNodeResponse) {
+    global.console.log("UPDATE NODE:", response, err);
+  });
+}
+
 async function subscribe() {
   const client = createClient();
   const channel = client.Subscribe();
@@ -69,6 +115,11 @@ function main() {
       subscribe();
       break;
     case "-add":
+      if (!argv[1]) {
+        global.console.log("No node name");
+        return;
+      }
+      addNode(argv[1], argv[2]);
       break;
     case "-view":
       if (!argv[1]) {
@@ -78,8 +129,18 @@ function main() {
       getNode(argv[1]);
       break;
     case "-update":
+      if (!argv[1] || !argv[2]) {
+        global.console.log("No node name");
+        return;
+      }
+      updateNode(argv[1], argv[2], argv[3]);
       break;
     case "-delete":
+      if (!argv[1]) {
+        global.console.log("No node id");
+        return;
+      }
+      deleteNode(argv[1]);
       break;
     case "-all":
       getNodes();
