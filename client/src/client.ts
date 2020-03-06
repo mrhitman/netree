@@ -1,4 +1,3 @@
-import * as protoLoader from "@grpc/proto-loader";
 import { credentials, loadPackageDefinition } from "grpc";
 import {
   AddNodeRequest,
@@ -8,6 +7,13 @@ import {
   GetNodeResponse,
   Node,
   UpdateNodeRequest
+} from "../../generated/graph_pb";
+import services from "../../generated/graph_grpc_pb";
+import { SubsribeRequest } from "../../generated/graph_pb";
+import {
+  GetNodesRequest,
+  SubsribeResponse,
+  GetNodesResponse
 } from "../../generated/graph_pb";
 
 const argv = process.argv.slice(2);
@@ -22,21 +28,22 @@ function help() {
   process.exit(0);
 }
 
-const packageDefinition = protoLoader.loadSync("../graph.proto");
-
-const graphProto = loadPackageDefinition(packageDefinition).api as any;
-
 function createClient() {
-  return new graphProto.Graph("127.0.0.1:9090", credentials.createInsecure());
+  return new services.GraphClient(
+    "127.0.0.1:9090",
+    credentials.createInsecure()
+  );
 }
 
 async function getNodes() {
   const client = createClient();
-  const channel = client.GetNodes();
+  const request = new GetNodesRequest();
+  const channel = client.getNodes(request);
 
-  channel.on("data", (data: any) => {
-    global.console.log(data);
+  channel.on("data", (data: GetNodesResponse) => {
+    global.console.log("GET NODES CHUNK: ", data.getNodeList());
   });
+
   channel.on("end", () => process.exit(0));
 }
 
@@ -45,8 +52,12 @@ async function getNode(id: string) {
   const request = new GetNodeRequest();
 
   request.setId(id);
-  client.getNode(request, function(err: Error, response: GetNodeResponse) {
-    global.console.log("GET NODE:", response, err);
+  client.getNode(request, function(err, response) {
+    if (err || !response) {
+      return;
+    }
+
+    global.console.log("GET NODE:", response.getNode(), err);
   });
 }
 
@@ -55,11 +66,12 @@ async function deleteNode(id: string) {
   const request = new DeleteNodeRequest();
 
   request.setId(id);
-  client.deleteNode(request, function(
-    err: Error,
-    response: DeleteNodeResponse
-  ) {
-    global.console.log("DELETE NODE:", response, err);
+  client.deleteNode(request, function(err, response) {
+    if (err || !response) {
+      return;
+    }
+
+    global.console.log("DELETE NODE: ", response.getDeleted(), err);
   });
 }
 
@@ -69,8 +81,13 @@ async function addNode(name: string, parent: string) {
 
   request.setName(name);
   request.setParentId(parent);
-  client.addNode(request, function(err: Error, response: GetNodeResponse) {
-    global.console.log("ADD NODE:", response, err);
+
+  client.addNode(request, function(err, response) {
+    if (err || !response) {
+      return;
+    }
+
+    global.console.log("ADD NODE:", response.getNode(), err);
   });
 }
 
@@ -84,17 +101,24 @@ async function updateNode(id: string, name: string, parent: string) {
   node.setParentId(parent);
   request.setId(id);
   request.setNode(node);
-  client.addNode(request, function(err: Error, response: GetNodeResponse) {
+
+  client.updateNode(request, function(err, response) {
+    if (err || !response) {
+      return;
+    }
+
     global.console.log("UPDATE NODE:", response, err);
   });
 }
 
 async function subscribe() {
   const client = createClient();
-  const channel = client.Subscribe();
+  const request = new SubsribeRequest();
+  const channel = client.subscribe(request);
+  global.console.log("SUBSCRIBE FOR UPDATES");
 
-  channel.on("data", (data: any) => {
-    global.console.log(data);
+  channel.on("data", (data: SubsribeResponse) => {
+    global.console.log("GET NODE NOTIFY: ", data.getCommand(), data.getNode());
   });
 }
 
