@@ -65,6 +65,34 @@ describe("TxtFile", () => {
       expect(content).toHaveLength(10);
     });
 
+    test("Simle update", async () => {
+      const line = chance().word({ length: 10 });
+      await provider.save(line);
+      await provider.save(chance().word({ length: 10 }));
+
+      let content = await readContent(name);
+      const newLine = chance().word({ length: 10 });
+      await provider.update(line, newLine);
+
+      content = await readContent(name);
+      expect(content).toHaveLength(2);
+      expect(content.includes(newLine)).toBeTruthy;
+      expect(content.includes(line)).toBeFalsy;
+    });
+
+    test("Simple delete", async () => {
+      const line = chance().word({ length: 10 });
+      await provider.save(line);
+      await provider.save(chance().word({ length: 10 }));
+
+      let content = await readContent(name);
+      expect(content).toHaveLength(2);
+      await provider.delete(line);
+
+      content = await readContent(name);
+      expect(content).toHaveLength(1);
+    });
+
     test("Read stream", async () => {
       const init: string[] = [];
       for (let i = 0; i < 10; i++) {

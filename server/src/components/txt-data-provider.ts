@@ -1,11 +1,11 @@
 import fs from "fs";
-import { chain, trim } from "lodash";
 import { promisify } from "util";
 import { DataProvider } from "./data-provider";
 import _ from "highland";
 
 const appendFile = promisify(fs.appendFile);
 const readFile = promisify(fs.readFile);
+const writeFile = promisify(fs.writeFile);
 const truncate = promisify(fs.truncate);
 
 export class TxtDataProvider extends DataProvider {
@@ -20,11 +20,7 @@ export class TxtDataProvider extends DataProvider {
   }
 
   public async read() {
-    return chain(await readFile(this.fileName, "utf8"))
-      .split("\n")
-      .map(trim)
-      .compact()
-      .value();
+    return (await readFile(this.fileName, "utf8")).split("\n").filter(Boolean);
   }
 
   public readStream<T>(): Highland.Stream<T> {
@@ -37,6 +33,29 @@ export class TxtDataProvider extends DataProvider {
 
   public async search(f: (line: string) => boolean) {
     return (await this.read()).filter(line => f(line));
+  }
+
+  public async update(oldLine: string, newLine: string) {
+    const lines = await this.read();
+
+    return Promise.all(
+      lines.map((line, i) => {
+        const l = line === oldLine ? newLine : line;
+        return i === 0 ? writeFile(this.fileName, l + "\n") : this.save(l);
+      })
+    );
+  }
+
+  public async delete(line: string) {
+    const lines = await this.read();
+
+    return Promise.all(
+      lines
+        .filter(l => l !== line)
+        .map((l, i) =>
+          i === 0 ? writeFile(this.fileName, l + "\n") : this.save(l)
+        )
+    );
   }
 }
 

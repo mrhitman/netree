@@ -88,7 +88,7 @@ export class NodeDefinition extends EventEmitter {
     call: grpc.ServerUnaryCall<graph_pb.UpdateNodeRequest>,
     callback: grpc.sendUnaryData<graph_pb.GetNodeResponse>
   ) {
-    this.findNode(call.request.getId()).toCallback((err, node) => {
+    this.findNode(call.request.getId()).toCallback(async (err, node) => {
       const sendedNode = call.request.getNode();
 
       if (!node || !sendedNode) {
@@ -106,7 +106,10 @@ export class NodeDefinition extends EventEmitter {
 
       const response = new graph.GetNodeResponse();
       this.emit("update", node);
-      // @TODO edit file
+      await this.provider.update(
+        Buffer.from(node.serializeBinary()).toString("base64"),
+        Buffer.from(sendedNode.serializeBinary()).toString("base64")
+      );
       response.setNode(node);
       callback(null, response);
     });
@@ -116,7 +119,7 @@ export class NodeDefinition extends EventEmitter {
     call: grpc.ServerUnaryCall<graph_pb.DeleteNodeRequest>,
     callback: grpc.sendUnaryData<graph_pb.DeleteNodeResponse>
   ) {
-    this.findNode(call.request.getId()).toCallback((err, node) => {
+    this.findNode(call.request.getId()).toCallback(async (err, node) => {
       if (!node) {
         callback(
           {
@@ -131,7 +134,9 @@ export class NodeDefinition extends EventEmitter {
       }
 
       const response = new graph.DeleteNodeResponse();
-      // @TODO delete from file
+      await this.provider.delete(
+        Buffer.from(node.serializeBinary()).toString("base64")
+      );
       response.setDeleted(true);
       this.emit("delete", node);
       callback(null, response);
