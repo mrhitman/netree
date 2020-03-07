@@ -17,3 +17,9 @@ npx grpc_tools_node_protoc \
   -I ${OUT_DIR} \
   -I . \
  *.proto
+
+ rm -rf ./server/src/generated
+ rm -rf ./client/src/generated
+ cp -R ${OUT_DIR} ./server/src/generated
+ cp -R ${OUT_DIR} ./client/src/generated
+ rm -rf ${OUT_DIR}

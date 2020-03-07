@@ -3,7 +3,7 @@ import * as grpc from "grpc";
 import { requestCallback } from "grpc";
 import { curry } from "lodash";
 import uuid from "uuid";
-import graph_pb, { Commands } from "../../../generated/graph_pb";
+import graph_pb, { Commands } from "../generated/graph_pb";
 import { DataProvider } from "../components/data-provider";
 
 export class NodeDefinition extends EventEmitter {

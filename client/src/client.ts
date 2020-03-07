@@ -1,5 +1,5 @@
 import { credentials } from "grpc";
-import services from "../../generated/graph_grpc_pb";
+import services from "./generated/graph_grpc_pb";
 import {
   AddNodeRequest,
   DeleteNodeRequest,
@@ -10,7 +10,7 @@ import {
   SubsribeRequest,
   SubsribeResponse,
   UpdateNodeRequest
-} from "../../generated/graph_pb";
+} from "./generated/graph_pb";
 
 const argv = process.argv.slice(2);
 
