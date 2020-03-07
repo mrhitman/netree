@@ -1,15 +1,17 @@
-import { EventEmitter } from "events";
 import * as grpc from "grpc";
 import { requestCallback } from "grpc";
-import { curry } from "lodash";
-import uuid from "uuid";
+import { map, omit } from "lodash";
+import * as uuid from "uuid";
 import graph_pb, { Commands } from "../generated/graph_pb";
 import { DataProvider } from "../components/data-provider";
 
-export class NodeDefinition extends EventEmitter {
-  constructor(protected readonly provider: DataProvider) {
-    super();
-  }
+export class NodeDefinition {
+  protected subscriptions: Record<
+    string,
+    grpc.ServerWritableStream<graph_pb.SubsribeResponse>
+  > = {};
+
+  constructor(protected readonly provider: DataProvider) {}
 
   protected deserializeNode(item: string) {
     return graph_pb.Node.deserializeBinary(Buffer.from(item, "base64"));
@@ -78,7 +80,7 @@ export class NodeDefinition extends EventEmitter {
     await this.provider.save(
       Buffer.from(node.serializeBinary()).toString("base64")
     );
-    this.emit("add", node);
+    this.broadcast({ command: Commands.ADD, node });
     callback(null, response);
   }
 
@@ -103,11 +105,11 @@ export class NodeDefinition extends EventEmitter {
       node.setParentId(sendedNode.getParentId());
 
       const response = new graph_pb.GetNodeResponse();
-      this.emit("update", node);
       await this.provider.update(
         Buffer.from(node.serializeBinary()).toString("base64"),
         Buffer.from(sendedNode.serializeBinary()).toString("base64")
       );
+      this.broadcast({ command: Commands.UPDATE, node });
       response.setNode(node);
       callback(null, response);
     });
@@ -136,7 +138,7 @@ export class NodeDefinition extends EventEmitter {
         Buffer.from(node.serializeBinary()).toString("base64")
       );
       response.setDeleted(true);
-      this.emit("delete", node);
+      this.broadcast({ command: Commands.DELETE, node });
       callback(null, response);
     });
   }
@@ -144,16 +146,24 @@ export class NodeDefinition extends EventEmitter {
   public async subscribe(
     call: grpc.ServerWritableStream<graph_pb.SubsribeResponse>
   ) {
-    function stream(command: 0 | 1 | 2, node: graph_pb.Node) {
-      const response = new graph_pb.SubsribeResponse();
-      response.setCommand(command);
-      response.setNode(node);
-      call.write(response);
-    }
+    this.subscriptions[call.getPeer()] = call;
+    call.on(
+      "close",
+      () => (this.subscriptions = omit(this.subscriptions, call.getPeer()))
+    );
+    call.on(
+      "finish",
+      () => (this.subscriptions = omit(this.subscriptions, call.getPeer()))
+    );
+  }
 
-    this.on("add", curry(stream)(Commands.ADD));
-    this.on("update", curry(stream)(Commands.UPDATE));
-    this.on("delete", curry(stream)(Commands.DELETE));
+  protected broadcast(message: { command: 0 | 1 | 2; node: graph_pb.Node }) {
+    map(this.subscriptions, call => {
+      const response = new graph_pb.SubsribeResponse();
+      response.setCommand(message.command);
+      response.setNode(message.node);
+      call.write(response);
+    });
   }
 }
 

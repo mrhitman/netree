@@ -1,5 +1,6 @@
 import { credentials } from "grpc";
 import services from "./generated/graph_grpc_pb";
+import { config } from "dotenv";
 import {
   AddNodeRequest,
   DeleteNodeRequest,
@@ -11,6 +12,8 @@ import {
   SubsribeResponse,
   UpdateNodeRequest
 } from "./generated/graph_pb";
+
+config();
 
 const argv = process.argv.slice(2);
 
@@ -26,7 +29,7 @@ function help() {
 
 function createClient() {
   return new services.GraphClient(
-    "127.0.0.1:9090",
+    process.env.HOST || "127.0.0.1:9090",
     credentials.createInsecure()
   );
 }

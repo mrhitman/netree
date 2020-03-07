@@ -5,6 +5,10 @@ services:
       context: ./server
       dockerfile: Dockerfile
     env_file: ./server/.env
+    ports:
+      - 9090:9090
+    volumes:
+      - ./server/data.txt:/opt/data.txt
   client:
     build:
       context: ./client

@@ -1,6 +1,6 @@
 import { config } from "dotenv";
 import { Server, ServerCredentials } from "grpc";
-import graph_grpc_pb from "./generated/graph_grpc_pb";
+import graph_grpc_pb, { IGraphService } from "./generated/graph_grpc_pb";
 import { TxtDataProvider } from "./components/txt-data-provider";
 import NodeService from "./implementations/node-service";
 
@@ -14,7 +14,8 @@ export function createServer() {
 
   server.addService<graph_grpc_pb.IGraphService>(
     graph_grpc_pb.GraphService,
-    (implementation as any) as graph_grpc_pb.IGraphService
+    // Unfortunatelly generated types different from real
+    ((implementation as any) as IGraphService) as graph_grpc_pb.IGraphService
   );
   return server;
 }
