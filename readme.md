@@ -1,5 +1,8 @@
 ## simple gPRPC client-server
 
+<em> This project used for training purposes and not
+recommeneded to use in real life </em>
+
 ```sh
     yarn install                # to install dependencies
     yarn build                  # to generate proto models
