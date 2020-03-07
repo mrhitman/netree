@@ -1,6 +1,6 @@
+import { config } from "dotenv";
 import { credentials } from "grpc";
 import services from "./generated/graph_grpc_pb";
-import { config } from "dotenv";
 import {
   AddNodeRequest,
   DeleteNodeRequest,

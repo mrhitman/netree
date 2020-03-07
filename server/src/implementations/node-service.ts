@@ -1,11 +1,12 @@
 import * as grpc from "grpc";
 import { requestCallback } from "grpc";
 import { map, omit } from "lodash";
-import * as uuid from "uuid";
-import graph_pb, { Commands } from "../generated/graph_pb";
+import { v4 } from "uuid";
 import { DataProvider } from "../components/data-provider";
+import { IGraphService } from "../generated/graph_grpc_pb";
+import graph_pb, { Commands } from "../generated/graph_pb";
 
-export class NodeDefinition {
+export class NodeDefinition implements IGraphService {
   protected subscriptions: Record<
     string,
     grpc.ServerWritableStream<graph_pb.SubsribeResponse>
@@ -71,7 +72,7 @@ export class NodeDefinition {
     const response = new graph_pb.GetNodeResponse();
     const node = new graph_pb.Node();
 
-    node.setId(uuid.v4());
+    node.setId(v4());
     node.setName(call.request.getName());
     node.setParentId(call.request.getParentId());
 
