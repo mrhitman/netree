@@ -9,10 +9,11 @@
 
 ```sh
     cd server
-    yarn test      # to run tests
-    yarn build     # transpile ts to js
-    yarn start     # to run server
-    yarn dev       # to run server in dev mode
+    cp .env.example .env # create config from default boilerplate
+    yarn test            # to run tests
+    yarn build           # transpile ts to js
+    yarn start           # to run server
+    yarn dev             # to run server in dev mode
 ```
 
 ### Client commands
