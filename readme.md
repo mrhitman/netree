@@ -23,6 +23,7 @@ recommeneded to use in real life </em>
 
 ```sh
     cd client
+    cp .env.example .env                    # create config from default boilerplate
     yarn cli -all                           # get all nodes
     yarn cli -view xxxx-xxxxx-xxxx-xxxxx    # view some node
     yarn cli -delete xxxx-xxxxx-xxxx-xxxxx  # delete some node
