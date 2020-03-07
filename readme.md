@@ -1,4 +1,4 @@
-## simple gPRPC client-server
+## simple gRPC client-server
 
 <em> This project used for training purposes and not
 recommeneded to use in real life </em>
