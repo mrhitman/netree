@@ -16,7 +16,7 @@ recommeneded to use in real life </em>
     yarn test            # to run tests
     yarn build           # transpile ts to js
     yarn start           # to run server
-    yarn dev             # to run server in dev mode
+    yarn dev             # to run server in dev mode (hotreload, ...)
 ```
 
 ### Client commands
