@@ -15,12 +15,12 @@ import {
 const argv = process.argv.slice(2);
 
 function help() {
-  global.console.log(` -l, -all, -list       # Get All Graph Nodes`);
-  global.console.log(` -add <name> <parent>  # To Add Graph Node`);
-  global.console.log(` -view <id>            # To Add Graph Node`);
-  global.console.log(` -d, -delete <id>      # To Delete Graph Node`);
-  global.console.log(` -subscribe, -s        # To subscribe`);
-  global.console.log(` -h, -help             # This info`);
+  global.console.log(` -l, -all, -list           # Get All Graph Nodes`);
+  global.console.log(` -add, -a <name> <parent>  # To Add Graph Node`);
+  global.console.log(` -view, -v <id>            # To Add Graph Node`);
+  global.console.log(` -d, -delete <id>          # To Delete Graph Node`);
+  global.console.log(` -subscribe, -s            # To subscribe`);
+  global.console.log(` -h, -help                 # This info`);
   process.exit(0);
 }
 
@@ -129,6 +129,7 @@ function main() {
       subscribe();
       break;
     case "-add":
+    case "-a":
       if (!argv[1]) {
         global.console.log("No node name");
         return;
@@ -136,6 +137,7 @@ function main() {
       addNode(argv[1], argv[2]);
       break;
     case "-view":
+    case "-v":
       if (!argv[1]) {
         global.console.log("No node id");
         return;
@@ -143,6 +145,7 @@ function main() {
       getNode(argv[1]);
       break;
     case "-update":
+    case "-u":
       if (!argv[1] || !argv[2]) {
         global.console.log("No node name");
         return;
