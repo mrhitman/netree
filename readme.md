@@ -25,7 +25,7 @@ recommeneded to use in real life </em>
     cd client
     yarn cli -all                           # get all nodes
     yarn cli -view xxxx-xxxxx-xxxx-xxxxx    # view some node
-    yarn cli -delete xxxx-xxxxx-xxxx-xxxxx  # view some node
+    yarn cli -delete xxxx-xxxxx-xxxx-xxxxx  # delete some node
     yarn cli -add name parent_id            # add node
     yarn cli -update name parent_id         # update node
     yarn cli -subscribe                     # subscribe for updates
