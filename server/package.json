@@ -19,7 +19,7 @@
     "grpc-tools": "^1.8.1",
     "highland": "^2.13.5",
     "jest": "^25.1.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "typescript": "^3.8.3",
     "uuid": "^7.0.2"
   },
